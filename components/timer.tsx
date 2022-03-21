@@ -1,8 +1,15 @@
 import { StyleSheet, View } from "react-native";
 import { Text } from "native-base";
 import React from "react";
+import { useRecoilState } from "recoil";
+import { microState, secondState } from "../atoms/timerAtom";
 
 const Timer = () => {
+  
+  const [secondTime, setSecondTime] = useRecoilState(secondState);
+  const [microSecondTime, setmicroSecondTime] = useRecoilState(microState);
+
+
   return (
     <View style={styles.container}>
       <Text
@@ -11,7 +18,7 @@ const Timer = () => {
         color="darkText"
         marginTop="8"
       >
-        00:00
+        {secondTime}:{microSecondTime}
       </Text>
     </View>
   );
