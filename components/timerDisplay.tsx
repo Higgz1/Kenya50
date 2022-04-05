@@ -2,12 +2,12 @@ import { StyleSheet, View } from "react-native";
 import { Text } from "native-base";
 import React from "react";
 import { useRecoilState } from "recoil";
-import { microState, secondState } from "../atoms/timerAtom";
+import { centiState, secondState } from "../atoms/timerAtom";
 
-const Timer = () => {
+const TimerDisplay = () => {
   
   const [secondTime, setSecondTime] = useRecoilState(secondState);
-  const [microSecondTime, setmicroSecondTime] = useRecoilState(microState);
+  const [centiSecondTime, setmicroSecondTime] = useRecoilState(centiState);
 
 
   return (
@@ -18,13 +18,13 @@ const Timer = () => {
         color="darkText"
         marginTop="8"
       >
-        {secondTime}:{microSecondTime}
+        {secondTime}:{centiSecondTime}
       </Text>
     </View>
   );
 };
 
-export default Timer;
+export default TimerDisplay;
 
 const styles = StyleSheet.create({
   container:{

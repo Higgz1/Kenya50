@@ -1,11 +1,11 @@
 import { atom } from "recoil";
 
 export const secondState = atom({
-    key: 'secondState',
-    default: '00',
-})
+  key: "secondState",
+  default: "0" + 0,
+});
 
-export const microState = atom({
-    key: 'microState',
-    default: '00',
-})
+export const centiState = atom({
+  key: "centiState",
+  default: "0" + 0,
+});
