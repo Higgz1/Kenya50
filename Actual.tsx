@@ -1,12 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Timer from './components/timer'
+import TimerDisplay from './components/timerDisplay'
+import TimerButtons from './components/timerButtons'
+
 
 
 const Actual = () => {
   return (
     <View>
-      <Timer/>
+     <TimerDisplay/>
+     <TimerButtons/>
     </View>
   )
 }
