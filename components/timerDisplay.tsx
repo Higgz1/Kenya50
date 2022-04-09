@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { Text } from "native-base";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { centiState, secondState, timerState } from "../atoms/timerAtom";
 import moment from "moment";
@@ -11,17 +11,26 @@ const TimerDisplay = () => {
   const [timeState, setTimeState] = useRecoilState(timerState);
 
   const startTimer = () => {
-    const now = moment().format("h:mm:ss a");
-    const then = moment().add(50, 's').format("h:mm:ss a");
-    console.log({ then });
+    const then: any = moment().add(50, "seconds");
+
+    const interval = setInterval(() => {
+      const now: any = moment();
+      const countdown = moment(then - now);
+      console.log({ countdown });
+    }, 1000);
   };
 
-  if (timeState === true) {
-    console.log("start timer");
-    startTimer();
-  } else {
-    console.log("stop timer");
-  }
+  const stopTimer = () => {
+    setTimeState(false);
+    clearInterval();
+  };
+
+  (timeState ? startTimer : stopTimer)
+
+
+  // useEffect(() => {
+  //   (timeState ? startTimer : stopTimer)
+  // }, [timeState]);
 
   return (
     <View style={styles.container}>

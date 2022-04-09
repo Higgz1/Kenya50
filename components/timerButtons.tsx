@@ -16,12 +16,12 @@ const TimerButtons = () => {
 
   const Play = () => {
     setTimeState(!timeState);
-    console.log({ timeState });
+    // console.log({ timeState });
   };
 
   const reset=()=>{
     setTimeState(false);
-    console.log({ timeState });
+    // console.log({ timeState });
 
 
   }
