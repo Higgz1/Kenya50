@@ -1,41 +1,34 @@
 import { StyleSheet, View } from "react-native";
 import { Text } from "native-base";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
-import { centiState, secondState, timerState } from "../atoms/timerAtom";
-import moment from "moment";
+import { intervalState, runState, timerState } from "../atoms/timerAtom";
 
 const TimerDisplay = () => {
-  const [secondTime, setSecondTime] = useRecoilState(secondState);
-  const [centiSecondTime, setmicroSecondTime] = useRecoilState(centiState);
-  const [timeState, setTimeState] = useRecoilState(timerState);
+  const [run, setRunState] = useRecoilState(runState);
+  const [time, setTime] = useRecoilState(timerState);
+  const [interval, setIntervalState] = useRecoilState(intervalState);
 
-  const startTimer = () => {
-    const then: any = moment().add(50, "seconds");
+  useEffect(() => {
 
-    const interval = setInterval(() => {
-      const now: any = moment();
-      const countdown = moment(then - now);
-      console.log({ countdown });
-    }, 1000);
-  };
+    if (run === true) {
+      const interval: any = setInterval(() => {
+        setTime((previousTime) => previousTime + 1);
+      }, 10);
+      console.log("set Time", time);
+      setIntervalState(interval);
+    } else {
+      clearInterval(interval);
+      console.log("puase Time", time);
 
-  const stopTimer = () => {
-    setTimeState(false);
-    clearInterval();
-  };
-
-  (timeState ? startTimer : stopTimer)
-
-
-  // useEffect(() => {
-  //   (timeState ? startTimer : stopTimer)
-  // }, [timeState]);
+      // console.log('stop',timer.current);
+    }
+  }, [run]);
 
   return (
     <View style={styles.container}>
       <Text fontSize="6xl" fontWeight="400" color="darkText" marginTop="8">
-        {secondTime}:{centiSecondTime}
+        {/* {secondTime}:{centiSecondTime} */}
       </Text>
     </View>
   );
