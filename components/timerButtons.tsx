@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Button, Icon, IconButton } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import { useRecoilState } from "recoil";
-import { timerState } from "../atoms/timerAtom";
+import { runState, timerState } from "../atoms/timerAtom";
 
 const controlls = [
   { id: 1, icon: "controller-play" },
@@ -12,19 +12,20 @@ const controlls = [
 ];
 
 const TimerButtons = () => {
-  const [timeState, setTimeState] = useRecoilState(timerState);
+  const [run, setRunState] = useRecoilState(runState);
+  const [time, setTime] = useRecoilState(timerState);
 
-  const Play = () => {
-    setTimeState(!timeState);
+  const timerRun = () => {
+    setRunState(!run);
     // console.log({ timeState });
   };
 
-  const reset=()=>{
-    setTimeState(false);
+  const reset = () => {
+    setRunState(false);
+    setTime(0);
+
     // console.log({ timeState });
-
-
-  }
+  };
 
   return (
     <Box
@@ -38,16 +39,16 @@ const TimerButtons = () => {
         h={24}
         w={24}
         borderRadius="full"
-        onPress={Play}
+        onPress={timerRun}
         style={styles.controller__Playbtn}
       >
-        {timeState ? (
+        {run ? (
           <Entypo name="controller-paus" size={48} color="white" />
         ) : (
           <Entypo name="controller-play" size={48} color="white" />
         )}
       </Button>
-      
+
       <IconButton
         size="lg"
         borderRadius="full"
