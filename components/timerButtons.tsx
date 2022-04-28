@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Box, Button, Icon, IconButton } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import { useRecoilState } from "recoil";
-import { runState, timerState } from "../atoms/timerAtom";
+import { elapsedTime, offSet, runState, timeState } from "../atoms/timerAtom";
 
 const controlls = [
   { id: 1, icon: "controller-play" },
@@ -12,19 +12,39 @@ const controlls = [
 ];
 
 const TimerButtons = () => {
-  const [run, setRunState] = useRecoilState(runState);
-  const [time, setTime] = useRecoilState(timerState);
+  const [isRunning, setisRunning] = useRecoilState(runState);
+  const [startTime, setStartTime] = useRecoilState(timeState);
+  const [elapsed, setElapsed] = useRecoilState(elapsedTime);
+  const [offset, setOffest] = useRecoilState(offSet);
+  const timer = useRef(0);
+  // const [timerRef, setTimerRef] = useState(0);
 
-  const timerRun = () => {
-    setRunState(!run);
-    // console.log({ timeState });
-  };
+  const Play = useCallback(() => {
+    if (isRunning === false) {
+      setisRunning(true);
+      setStartTime(Date.now());
+      loop();
+    }
+  }, [isRunning]);
 
-  const reset = () => {
-    setRunState(false);
-    setTime(0);
+  const Pause = useCallback(() => {
+    if (isRunning === true) {
+      setisRunning(false);
+      setOffest(elapsed);
+    }
+  }, [isRunning]);
 
-    // console.log({ timeState });
+  const reset = useCallback(() => {
+    setisRunning(false);
+    setOffest(0);
+  }, [isRunning]);
+
+  const loop = () => {
+    if (isRunning === true) {
+      let ms = (Date.now() - startTime) / 1000;
+      setElapsed((ms += offset));
+      setTimeout(loop, 50);
+    }
   };
 
   return (
@@ -35,19 +55,27 @@ const TimerButtons = () => {
       alignItems="center"
       style={styles.controller}
     >
-      <Button
-        h={24}
-        w={24}
-        borderRadius="full"
-        onPress={timerRun}
-        style={styles.controller__Playbtn}
-      >
-        {run ? (
+      {isRunning ? (
+        <Button
+          h={24}
+          w={24}
+          borderRadius="full"
+          onPress={Pause}
+          style={styles.controller__Playbtn}
+        >
           <Entypo name="controller-paus" size={48} color="white" />
-        ) : (
+        </Button>
+      ) : (
+        <Button
+          h={24}
+          w={24}
+          borderRadius="full"
+          onPress={Play}
+          style={styles.controller__Playbtn}
+        >
           <Entypo name="controller-play" size={48} color="white" />
-        )}
-      </Button>
+        </Button>
+      )}
 
       <IconButton
         size="lg"
